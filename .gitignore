@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+wheels/
+.eggs/
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# IDE & Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+*.log
+
+# PyInstaller
+*.spec
+dist/
+build/
+
+# Distribution
+*.tar.gz
+*.whl
+
+# Type checking
+.mypy_cache/
+.pytype/
+.pyre/
+
+# Jupyter (phòng hờ)
+.ipynb_checkpoints/
+
+# OS artifacts
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
