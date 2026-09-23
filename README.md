@@ -1,4 +1,4 @@
-# 🧮 PyQt6 Calculator
+# 🧮 PyQt6 Calculator - Bài tập nhóm 8 - Nhóm Python_CT02
 
 Ứng dụng máy tính desktop đầy đủ tính năng, được xây dựng bằng **Python 3.10+** và **PyQt6**, với kiến trúc MVC rõ ràng, hỗ trợ Dark/Light Mode, lịch sử phép tính, chế độ Scientific và bộ test pytest toàn diện.
 
