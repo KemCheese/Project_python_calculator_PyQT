@@ -27,6 +27,7 @@ class SimpleCalculator(QMainWindow):
         # QLineEdit cho phép nhập chuỗi dài vô hạn, tự động cuộn ngang (scroll) mượt mà
         self.display = QLineEdit()
         self.display.returnPressed.connect(lambda: self.calculate_result(self.display.text())) # Kích hoạt tính khi gõ phím Enter
+        self.display.textEdited.connect(self.on_text_edited) # Xử lý khi user gõ từ bàn phím cứng
         # (Không cài read-only nữa để cho phép người dùng gõ từ bàn phím cứng)
         self.display.setAlignment(Qt.AlignmentFlag.AlignRight) # Căn phải giống máy tính thật
         self.display.setFont(QFont("Arial", 24))
@@ -68,6 +69,11 @@ class SimpleCalculator(QMainWindow):
                 
         main_layout.addLayout(grid_layout)
 
+    def on_text_edited(self, text):
+        """Khôi phục lại biểu thức cũ nếu user cố gõ thêm khi màn hình đang hiện lỗi"""
+        if text.startswith("Lỗi"):
+            self.display.setText(getattr(self, 'last_input', ''))
+
     def on_button_click(self, char):
         """
         Xử lý khi người dùng nhấn nút.
@@ -75,6 +81,12 @@ class SimpleCalculator(QMainWindow):
         """
         current_text = self.display.text()
         
+        # Nếu màn hình đang báo lỗi, tự động khôi phục biểu thức lỗi trước khi gắn ký tự mới
+        if current_text.startswith("Lỗi"):
+            current_text = getattr(self, 'last_input', '')
+            self.display.setText(current_text)
+            
+
         if char == 'C':
             self.display.clear() # Xóa hết
         elif char == '⌫':
@@ -99,7 +111,7 @@ class SimpleCalculator(QMainWindow):
         vì đã chặn các thư viện tích hợp (__builtins__).
         Không gây kẹt luồng vì các phép tính này O(1) hoặc cực kỳ nhanh.
         """
-        if not expression:
+        if not expression or expression.startswith("Lỗi"):
             return
 
         # 1. BẮT LỖI INPUT
@@ -185,15 +197,11 @@ class SimpleCalculator(QMainWindow):
             
     def show_error(self, message):
         """
-        Tách biệt logic hiển thị lỗi ra hàm riêng để đảm bảo UX không đè lên UI nhập liệu.
-        Sử dụng hộp thoại QMessageBox.
+        Tách biệt logic hiển thị lỗi ra hàm riêng để đảm bảo UX.
+        Hiển thị lỗi thẳng lên màn hình và lưu lại chuỗi sai để user sửa.
         """
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Icon.Warning)
-        msg_box.setWindowTitle("Phát hiện lỗi")
-        msg_box.setText(message)
-        msg_box.exec()
-        # Không xóa màn hình (self.display.clear()) để user có thể nhấn ⌫ và sửa lại chỗ nhập sai
+        self.last_input = self.display.text() # Lưu lại nội dung gây lỗi
+        self.display.setText(message) # Hiện chữ báo lỗi lên màn hình
 
 if __name__ == "__main__":
     # QApplication quản lý vòng đời ứng dụng và event loop.
