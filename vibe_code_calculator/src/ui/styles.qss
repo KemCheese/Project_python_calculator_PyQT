@@ -1,0 +1,433 @@
+/* ═══════════════════════════════════════════════════════════════
+   PyQt6 Calculator - Qt Style Sheet (v2)
+   
+   Tối ưu cho QSS (Qt Style Sheets):
+   - Loại bỏ CSS property không hợp lệ (box-sizing, cursor, opacity, outline)
+   - Sử dụng chỉ các property Qt hỗ trợ
+   - Placeholder THEME_* được thay bằng màu thực từ Python
+
+   Cấu trúc:
+   1. Global base
+   2. Main Window & Container
+   3. Display Area
+   4. Button groups (Number, Operator, Equals, Clear, Function, Memory, Scientific)
+   5. Toolbar & Toggles
+   6. History Panel
+   7. Scrollbar
+═══════════════════════════════════════════════════════════════ */
+
+/* ─── Global ────────────────────────────────────────────────── */
+* {
+    font-family: "Segoe UI", "SF Pro Display", "Helvetica Neue", sans-serif;
+}
+
+/* ─── Main Window & Container ───────────────────────────────── */
+QMainWindow {
+    background-color: THEME_BG_PRIMARY;
+}
+
+QWidget#centralWidget {
+    background-color: THEME_BG_PRIMARY;
+}
+
+QWidget#calculatorContainer {
+    background-color: THEME_BG_PRIMARY;
+}
+
+/* ─── Display Area ──────────────────────────────────────────── */
+#displayArea {
+    background-color: THEME_BG_DISPLAY;
+    border-radius: 16px;
+    padding: 8px;
+    margin: 10px 10px 6px 10px;
+    min-height: 140px;
+}
+
+#expressionLabel {
+    color: THEME_TEXT_SECONDARY;
+    font-size: 16px;
+    background-color: transparent;
+    border: none;
+    padding: 6px 16px 0px 16px;
+    min-height: 30px;
+    qproperty-alignment: AlignRight;
+}
+
+#resultLabel {
+    color: THEME_TEXT_PRIMARY;
+    font-size: 52px;
+    font-weight: 300;
+    background-color: transparent;
+    border: none;
+    padding: 0px 16px 10px 16px;
+    min-height: 70px;
+    qproperty-alignment: AlignRight;
+}
+
+#resultLabel[error="true"] {
+    color: THEME_COLOR_ERROR;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* ─── Button Grid ───────────────────────────────────────────── */
+#buttonGrid {
+    background-color: transparent;
+}
+
+/* ─── Number Buttons (0-9, .) ───────────────────────────────── */
+QPushButton#btn_0,
+QPushButton#btn_1, QPushButton#btn_2, QPushButton#btn_3,
+QPushButton#btn_4, QPushButton#btn_5, QPushButton#btn_6,
+QPushButton#btn_7, QPushButton#btn_8, QPushButton#btn_9,
+QPushButton#btn_dot {
+    background-color: THEME_BTN_NUMBER_BG;
+    color: THEME_BTN_NUMBER_FG;
+    border: 1px solid THEME_BTN_NUMBER_BORDER;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+QPushButton#btn_0:hover,
+QPushButton#btn_1:hover, QPushButton#btn_2:hover, QPushButton#btn_3:hover,
+QPushButton#btn_4:hover, QPushButton#btn_5:hover, QPushButton#btn_6:hover,
+QPushButton#btn_7:hover, QPushButton#btn_8:hover, QPushButton#btn_9:hover,
+QPushButton#btn_dot:hover {
+    background-color: THEME_BTN_NUMBER_HOVER;
+    border: 1px solid THEME_BTN_NUMBER_HOVER;
+}
+
+QPushButton#btn_0:pressed,
+QPushButton#btn_1:pressed, QPushButton#btn_2:pressed, QPushButton#btn_3:pressed,
+QPushButton#btn_4:pressed, QPushButton#btn_5:pressed, QPushButton#btn_6:pressed,
+QPushButton#btn_7:pressed, QPushButton#btn_8:pressed, QPushButton#btn_9:pressed,
+QPushButton#btn_dot:pressed {
+    background-color: THEME_BTN_NUMBER_PRESSED;
+    border: 1px solid THEME_BTN_NUMBER_PRESSED;
+}
+
+/* ─── Operator Buttons (+, −, ×, ÷) ────────────────────────── */
+QPushButton#btn_add, QPushButton#btn_sub,
+QPushButton#btn_mul, QPushButton#btn_div {
+    background-color: THEME_BTN_OP_BG;
+    color: THEME_BTN_OP_FG;
+    border: 1px solid THEME_BTN_OP_BORDER;
+    border-radius: 10px;
+    font-size: 22px;
+    font-weight: 400;
+}
+
+QPushButton#btn_add:hover, QPushButton#btn_sub:hover,
+QPushButton#btn_mul:hover, QPushButton#btn_div:hover {
+    background-color: THEME_BTN_OP_HOVER;
+    border: 1px solid THEME_BTN_OP_HOVER;
+}
+
+QPushButton#btn_add:pressed, QPushButton#btn_sub:pressed,
+QPushButton#btn_mul:pressed, QPushButton#btn_div:pressed {
+    background-color: THEME_BTN_OP_PRESSED;
+    border: 1px solid THEME_BTN_OP_PRESSED;
+}
+
+/* ─── Equals Button (=) ─────────────────────────────────────── */
+QPushButton#btn_equals {
+    background-color: THEME_BTN_EQUALS_BG;
+    color: THEME_BTN_EQUALS_FG;
+    border: none;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+QPushButton#btn_equals:hover {
+    background-color: THEME_BTN_EQUALS_HOVER;
+}
+
+QPushButton#btn_equals:pressed {
+    background-color: THEME_BTN_EQUALS_PRESSED;
+}
+
+/* ─── Clear Button (C) ──────────────────────────────────────── */
+QPushButton#btn_clear {
+    background-color: THEME_BTN_CLEAR_BG;
+    color: THEME_BTN_CLEAR_FG;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+QPushButton#btn_clear:hover {
+    background-color: THEME_BTN_CLEAR_HOVER;
+}
+
+QPushButton#btn_clear:pressed {
+    background-color: THEME_BTN_CLEAR_PRESSED;
+}
+
+/* ─── Function Buttons (CE, ⌫, √, x², 1/x, ±, (, )) ────────── */
+QPushButton#btn_ce,
+QPushButton#btn_backspace,
+QPushButton#btn_sqrt, QPushButton#btn_sqr,
+QPushButton#btn_inv, QPushButton#btn_percent,
+QPushButton#btn_negate, QPushButton#btn_factorial,
+QPushButton#btn_paren_open, QPushButton#btn_paren_close {
+    background-color: THEME_BTN_FUNC_BG;
+    color: THEME_BTN_FUNC_FG;
+    border: 1px solid THEME_BTN_FUNC_BORDER;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+QPushButton#btn_ce:hover,
+QPushButton#btn_backspace:hover,
+QPushButton#btn_sqrt:hover, QPushButton#btn_sqr:hover,
+QPushButton#btn_inv:hover, QPushButton#btn_percent:hover,
+QPushButton#btn_negate:hover, QPushButton#btn_factorial:hover,
+QPushButton#btn_paren_open:hover, QPushButton#btn_paren_close:hover {
+    background-color: THEME_BTN_FUNC_HOVER;
+    border: 1px solid THEME_BTN_FUNC_HOVER;
+}
+
+QPushButton#btn_ce:pressed,
+QPushButton#btn_backspace:pressed,
+QPushButton#btn_sqrt:pressed, QPushButton#btn_sqr:pressed,
+QPushButton#btn_inv:pressed, QPushButton#btn_percent:pressed,
+QPushButton#btn_negate:pressed, QPushButton#btn_factorial:pressed,
+QPushButton#btn_paren_open:pressed, QPushButton#btn_paren_close:pressed {
+    background-color: THEME_BTN_FUNC_PRESSED;
+    border: 1px solid THEME_BTN_FUNC_PRESSED;
+}
+
+/* ─── Memory Buttons (MC, MR, M+, M-, MS) ───────────────────── */
+QPushButton#btn_mc, QPushButton#btn_mr,
+QPushButton#btn_mplus, QPushButton#btn_mminus,
+QPushButton#btn_ms {
+    background-color: transparent;
+    color: THEME_BTN_MEM_FG;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    min-height: 30px;
+    max-height: 30px;
+}
+
+QPushButton#btn_mc:hover, QPushButton#btn_mr:hover,
+QPushButton#btn_mplus:hover, QPushButton#btn_mminus:hover,
+QPushButton#btn_ms:hover {
+    background-color: THEME_BTN_MEM_HOVER;
+}
+
+QPushButton#btn_mc:pressed, QPushButton#btn_mr:pressed,
+QPushButton#btn_mplus:pressed, QPushButton#btn_mminus:pressed,
+QPushButton#btn_ms:pressed {
+    background-color: THEME_BTN_MEM_PRESSED;
+}
+
+QPushButton#btn_mc:disabled, QPushButton#btn_mr:disabled {
+    color: THEME_TEXT_DISABLED;
+}
+
+/* ─── Scientific Mode Buttons ───────────────────────────────── */
+QPushButton#btn_sin, QPushButton#btn_cos, QPushButton#btn_tan,
+QPushButton#btn_log, QPushButton#btn_ln, QPushButton#btn_pi,
+QPushButton#btn_e_const, QPushButton#btn_asin, QPushButton#btn_acos,
+QPushButton#btn_atan {
+    background-color: THEME_BTN_SCI_BG;
+    color: THEME_BTN_SCI_FG;
+    border: 1px solid THEME_BTN_SCI_BORDER;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 38px;
+    max-height: 38px;
+}
+
+QPushButton#btn_sin:hover, QPushButton#btn_cos:hover, QPushButton#btn_tan:hover,
+QPushButton#btn_log:hover, QPushButton#btn_ln:hover, QPushButton#btn_pi:hover,
+QPushButton#btn_e_const:hover, QPushButton#btn_asin:hover, QPushButton#btn_acos:hover,
+QPushButton#btn_atan:hover {
+    background-color: THEME_BTN_SCI_HOVER;
+    border: 1px solid THEME_BTN_SCI_HOVER;
+}
+
+QPushButton#btn_sin:pressed, QPushButton#btn_cos:pressed, QPushButton#btn_tan:pressed,
+QPushButton#btn_log:pressed, QPushButton#btn_ln:pressed, QPushButton#btn_pi:pressed,
+QPushButton#btn_e_const:pressed, QPushButton#btn_asin:pressed, QPushButton#btn_acos:pressed,
+QPushButton#btn_atan:pressed {
+    background-color: THEME_BTN_SCI_PRESSED;
+    border: 1px solid THEME_BTN_SCI_PRESSED;
+}
+
+/* ─── Toolbar ───────────────────────────────────────────────── */
+#toolbar {
+    background-color: THEME_BG_PRIMARY;
+}
+
+QPushButton#btnThemeToggle {
+    background-color: transparent;
+    color: THEME_TEXT_SECONDARY;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 4px 8px;
+    min-width: 34px;
+    min-height: 34px;
+    max-height: 34px;
+}
+
+QPushButton#btnThemeToggle:hover {
+    background-color: THEME_BTN_FUNC_HOVER;
+    color: THEME_TEXT_PRIMARY;
+}
+
+QPushButton#btnHistoryToggle {
+    background-color: transparent;
+    color: THEME_TEXT_SECONDARY;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 4px 8px;
+    min-width: 34px;
+    min-height: 34px;
+    max-height: 34px;
+}
+
+QPushButton#btnHistoryToggle:hover {
+    background-color: THEME_BTN_FUNC_HOVER;
+    color: THEME_TEXT_PRIMARY;
+}
+
+QPushButton#btnHistoryToggle:checked {
+    background-color: THEME_COLOR_ACCENT;
+    color: #FFFFFF;
+}
+
+QPushButton#btnScientificToggle {
+    background-color: transparent;
+    color: THEME_TEXT_SECONDARY;
+    border: 1px solid THEME_BORDER;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    min-height: 28px;
+    max-height: 28px;
+}
+
+QPushButton#btnScientificToggle:hover {
+    background-color: THEME_BTN_FUNC_HOVER;
+    color: THEME_TEXT_PRIMARY;
+}
+
+QPushButton#btnScientificToggle:checked {
+    background-color: THEME_COLOR_ACCENT;
+    color: #FFFFFF;
+    border: 1px solid THEME_COLOR_ACCENT;
+}
+
+QLabel#modeLabel {
+    color: THEME_TEXT_SECONDARY;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* ─── History Panel ─────────────────────────────────────────── */
+#historyPanel {
+    background-color: THEME_BG_HISTORY;
+    border-left: 1px solid THEME_BORDER;
+}
+
+#historyHeader {
+    background-color: THEME_BG_HISTORY;
+    border-bottom: 1px solid THEME_BORDER;
+}
+
+QLabel#historyTitle {
+    color: THEME_TEXT_PRIMARY;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+QPushButton#historyClearBtn {
+    background-color: transparent;
+    color: THEME_COLOR_ACCENT;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+}
+
+QPushButton#historyClearBtn:hover {
+    background-color: THEME_BTN_FUNC_HOVER;
+}
+
+QListWidget#historyList {
+    background-color: transparent;
+    border: none;
+}
+
+QListWidget#historyList::item {
+    background-color: transparent;
+    color: THEME_TEXT_PRIMARY;
+    padding: 10px 14px;
+    border-bottom: 1px solid THEME_BORDER_SUBTLE;
+    font-size: 13px;
+}
+
+QListWidget#historyList::item:hover {
+    background-color: THEME_BTN_FUNC_HOVER;
+}
+
+QListWidget#historyList::item:selected {
+    background-color: THEME_COLOR_ACCENT;
+    color: #FFFFFF;
+}
+
+QLabel#historyEmpty {
+    color: THEME_TEXT_SECONDARY;
+    font-size: 13px;
+    padding: 30px;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────── */
+QScrollBar:vertical {
+    background: transparent;
+    width: 5px;
+    margin: 0;
+    border: none;
+}
+
+QScrollBar::handle:vertical {
+    background: THEME_SCROLLBAR_HANDLE;
+    border-radius: 2px;
+    min-height: 24px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: THEME_SCROLLBAR_HOVER;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0;
+    border: none;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+
+/* ─── Memory Indicator ──────────────────────────────────────── */
+QLabel#memoryIndicator {
+    color: THEME_COLOR_ACCENT;
+    font-size: 11px;
+    font-weight: 700;
+    background-color: transparent;
+    padding: 2px 4px;
+}
